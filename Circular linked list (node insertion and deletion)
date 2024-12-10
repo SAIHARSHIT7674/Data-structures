@@ -1,0 +1,227 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node*next;
+};
+struct node*display(struct node*front){
+    struct node*t1=front;
+    do{
+        printf("%d ",t1->data);
+        t1=t1->next;
+    }
+    while(t1!=front);
+        printf("\n");
+    
+    return front;
+}
+
+struct node*insertfront(struct node*front,int val){
+    struct node*t1,*temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    if(front==NULL){
+        temp->next=temp;
+        front=temp;
+    }
+    else{
+        t1=front;
+        while(t1->next!=front){
+            t1=t1->next;
+        }
+        temp->next=front;
+        t1->next=temp;
+        temp=front;
+    }
+    return front;
+}
+
+struct node*insertrare(struct node*front,int val){
+    struct node*t1,*temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    if(front==NULL){
+        temp->next=temp;
+        front=temp;    
+    }
+    else{
+        t1=front;
+        while(t1->next!=front){
+            t1=t1->next;
+        }
+        temp->next=t1->next;
+        t1->next=temp;
+    }
+    return front;
+}
+
+struct node*insertmiddle(struct node*front,int val){
+    struct node*t1,*t2,*temp=(struct node*)malloc(sizeof(struct node));
+    if(front&&front->next!=front){
+        t1=front;
+        t2=front->next;
+        temp->data=val;
+        while(t2!=front&&t2->next!=front&&t2->next->next!=front){
+            t1=t1->next;
+            t2=t2->next->next;
+        }
+        temp->next=t1->next;
+        t1->next=temp;
+    }
+    return front;
+}
+
+struct node*insertpos(struct node*front,int val,int pos){
+    struct node*t1,*t2,*temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    int count=1;
+    if(pos==1){
+        t1=front;
+        temp->next=front;
+        while(t1->next!=front){
+            t1=t1->next;
+        }
+        t1->next=temp;
+        front=temp;
+    }
+    else if(pos>1){
+        t1=front;
+        while(count<pos-1){
+            t1=t1->next;
+            count++;
+        }
+        temp->next=t1->next;
+        t1->next=temp;
+    }
+    return front;
+}
+
+struct node*deletefront(struct node*front){
+    struct node*t1,*t2;
+    if(front==NULL){
+        t1=front;
+        front=front->next;
+        free(t1);
+    }
+    else{
+        t1=front;
+        t2=front;
+        while(t2->next!=front){
+            t2=t2->next;
+        }
+        front=front->next;
+        t2->next=front;
+        free(t1);
+    }
+    return front;
+}
+struct node*deleterare(struct node*front){
+    struct node*t1,*t2;
+    if(front==NULL){
+        t1=front;
+        front=front->next;
+        free(t1);
+    }
+    else{
+        t1=front;
+        while(t1->next->next!=front){
+            t1=t1->next;
+        }
+        t2=t1->next;
+        t1->next=t2->next;
+        free(t2);
+    }
+    return front;
+}
+struct node*deletemiddle(struct node*front){
+    struct node*t1,*t2;
+    if(front&&front->next!=front&&front->next->next!=front){
+        t1=front;
+        t2=front->next;
+        while(t2&&t2->next!=front&&t2->next->next!=front){
+            t2=t2->next->next;
+            t1=t1->next;
+        }
+        t2=t1->next;
+        t1->next=t2->next;
+        free(t2);
+    }
+    return front;
+}
+
+struct node*deletepos(struct node*front,int pos){
+    struct node*t1,*t2;
+    int count=1;
+    if(pos==1){
+        t1=front;
+        t2=t1->next;
+        front=front->next;
+        while(t2->next!=front){
+            t2=t2->next;
+        }
+        t2->next=front;
+        free(t1);
+    }
+    else if(pos>1){
+        t1=front;
+        while(count<pos-1){
+            t1=t1->next;
+            count++;
+        }
+        t2=t1->next;
+        t1->next=t2->next;
+    }
+    return front;
+}
+
+void main(){
+    struct node*first=NULL;
+   int val,pos,choice;
+   for( ; ; ){
+       printf("enter the choice");
+       scanf("%d",&choice);
+       switch(choice){
+            case 1: printf("enter the value :");
+                    scanf("%d",&val);
+                    first=insertfront(first,val);
+                    break;
+                    
+            case 2: first=display(first);
+                    break;
+                    
+            case 3: printf("enter the value :");
+                    scanf("%d",&val);
+                    first=insertrare(first,val);
+                    break;
+                    
+            case 4: printf("enter the value :");
+                    scanf("%d",&val);
+                    first=insertmiddle(first,val);
+                    break;
+                    
+            case 5: printf("enter the position : ");
+                    scanf("%d",&pos);
+                    printf("enter the value :");
+                    scanf("%d",&val);
+                    first=insertpos(first,val,pos);
+                    break;
+                    
+            case 6: first=deletefront(first);
+                    break;
+                    
+            case 7: first=deleterare(first);
+                    break;
+                    
+            case 8: first=deletemiddle(first);
+                    break;
+                    
+            case 9: printf("enter the position");
+                    scanf("%d",&pos);
+                    first=deletepos(first,pos);
+                    break;
+                    
+            default : printf("enter valid case");
+                      break;
+                    
+       }
+   }
+}
