@@ -1,0 +1,103 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+	int data;
+	struct node*next;
+};
+struct node*insertrare(struct node*front,int val) {
+	struct node*t1,*temp=(struct node*)malloc(sizeof(struct node));
+	temp->data=val;
+	if(front==NULL) {
+		temp->next=front;
+		front=temp;
+	}
+	else {
+		t1=front;
+		while(t1->next!=NULL) {
+			t1=t1->next;
+		}
+		temp->next=t1->next;
+		t1->next=temp;
+	}
+	return front;
+}
+
+struct node*display(struct node*front) {
+	struct node*t1=front;
+	while(t1!=NULL) {
+		printf("%d ",t1->data);
+		t1=t1->next;
+	}
+	return front;
+}
+struct node*head=NULL;
+void reverse(struct node*front) {
+	if(front->next==NULL) {
+		head=front;
+	}
+	else {
+		reverse(front->next);
+		front->next->next=front;
+		front->next=NULL;
+	}
+}
+
+struct node*swap(struct node*front) {
+	struct node*t1,*t2,*t3;
+	int flag=0;
+	if(front && front->next) {
+	    t1=front;
+		t2=front->next;
+		while(t1 && t1->next) {
+			if(flag==0) {
+				t1->next=t2->next;
+				t2->next=t1;
+				front=t2;
+				t3=t1;
+				t1=t1->next;
+				flag=1;
+			}
+			else {
+				t1=t3->next;
+				t2=t1->next;
+				t1->next=t2->next;
+				t2->next=t1;
+				t3->next=t2;
+				t3=t1;
+				t1=t1->next;
+			}
+		}
+	}
+	return front;
+}
+
+void main() {
+	struct node*first=NULL;
+	int val,choice,pos;
+	for( ; ; ) {
+		printf("enter the choice :");
+		scanf("%d",&choice);
+		switch(choice) {
+		case 1:
+			printf("enter the value :");
+			scanf("%d",&val);
+			first=insertrare(first,val);
+			break;
+
+		case 2:
+			first=display(first);
+			break;
+
+		case 3:
+			reverse(first);
+			first=head;
+			break;
+			
+		case 4: 
+		    first=swap(first);
+		    break;
+		}
+	}
+
+}
