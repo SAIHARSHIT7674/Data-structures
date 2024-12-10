@@ -1,0 +1,53 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node*llink,*rlink;
+};
+
+struct node*binarytree(struct node*front,int val){
+    struct node*t1,*temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    temp->llink=temp->rlink=NULL;
+    if(front==NULL){
+        front=temp;
+    }
+    else{
+        t1=front;
+        while(1){
+            if(temp->data<t1->data){
+                if(t1->llink==NULL){
+                    t1->llink=temp;
+                    break;
+                }
+                else{
+                    t1=t1->llink;
+                }
+            }
+            else if(temp->data > t1->data){
+                if(t1->rlink==NULL){
+                    t1->rlink=temp;
+                    break;
+                }
+                else{
+                    t1=t1->rlink;
+                }
+            }
+            else{
+                free(temp);
+                break;
+            }
+        }
+    }
+    return front;
+}
+void main(){
+    struct node*first=NULL;
+    int a[]={75,25,35,15,85,100,95};
+    int b=sizeof(a)/sizeof(a[0]);
+    for(int i=0;i<b;i++){
+       first=binarytree(first,a[i]);
+    }
+    printf("%d",first->llink->llink->data);
+}
