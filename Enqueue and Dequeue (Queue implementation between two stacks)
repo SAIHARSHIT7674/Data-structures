@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node*next,*prev;
+};
+
+struct queue{
+    struct node*stack1;
+    struct node*stack2;
+};
+
+void push(struct node**front,int val){
+    struct node*temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    temp->next=*front;
+    *front=temp;
+}
+
+int pop(struct node**front){
+    struct node*t1;
+    int x=t1->data;
+    t1=*front;
+    *front=t1->next;
+    free(t1);
+    return x;
+}
+
+void enqueue(struct queue*q,int val){
+    push(&q->stack1,val);
+}
+int dequeue(struct queue*q){
+    int x;
+    if(q->stack1==NULL && q->stack2==NULL){
+        printf("both are empty");
+    }
+    else if(q->stack2==NULL){
+        while(q->stack1!=NULL){
+            x=pop(&q->stack1);
+            push(&q->stack2,x);
+        }
+        x=pop(&q->stack2);
+        return x;
+    }
+    else{
+        x=pop(&q->stack2);
+        return x;
+    }
+}
+void main(){
+    struct queue*q=(struct queue*)malloc(sizeof(struct queue));
+    q->stack1=q->stack2=NULL;
+    enqueue(q,1);
+    enqueue(q,2);
+    enqueue(q,3);
+    printf("%d",dequeue(q));
+    printf("%d",dequeue(q));
+    printf("%d",dequeue(q));
+}
